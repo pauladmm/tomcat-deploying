@@ -94,3 +94,41 @@ mvn tomcat7:deploy
 ```
 
 ![myapp deployed](/files/img/myapp-deployed-maven.PNG)
+
+## 4 - Another App Deployment (Rock Scissor Paper)
+
+To keep practising, this time an app from Github was cloned to the machine, and the branch _patch-1_ was choosen to avoid conflicts:
+
+```
+git clone https://github.com/cameronmcnz/rock-paper-scissors.git
+
+git checkout patch-1
+
+```
+
+This time POM file was modified to add a pluggin block with this Tomcat server data, and adding the path **/rsp** to access the app.
+
+```
+<plugin>
+          <groupId>org.apache.tomcat.maven</groupId>
+          <artifactId>tomcat7-maven-plugin</artifactId>
+          <version>2.2</version>
+          <configuration>
+            <url>http://localhost:8080/manager/text</url>
+            <server>Tomcat</server>
+            <path>/rsp</path>
+        </configuration>
+      </plugin>
+```
+
+Next, the app was deployed with:
+
+```
+mvn tomcat7:deploy
+```
+
+![RSP deployed](/files/img/rock-scissors-paper-deployment.PNG)
+
+The App:
+
+![RSP App](/files/img/rsp-app.PNG)
