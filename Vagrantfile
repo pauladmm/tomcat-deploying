@@ -11,7 +11,7 @@ Vagrant.configure("2") do |config|
   # Install services
   apt-get update
   apt-get install
-  apt install -y tomcat9 openjdk-11-jdk tomcat9-admin
+  apt install -y tomcat9 openjdk-11-jdk tomcat9-admin maven
 
   # Add group 
   groupadd tomcat9
@@ -19,9 +19,12 @@ Vagrant.configure("2") do |config|
   # Add user tomcat9
   useradd -s /bin/false -g tomcat9 -d /etc/tomcat9 tomcat9
 
-  # Modify users and permission configuration and remote access control
+  # Modify users and permission configuration and remote access control for Tomcat deploy
+  # Modify server block and POM for Maven deploy
   cp /vagrant/files/tomcat-users.xml /etc/tomcat9/tomcat-users.xml
   cp /vagrant/files/context.xml /usr/share/tomcat9-admin/host-manager/META-INF/context.xml
+  cp /vagrant/files/settings.xml /etc/maven/settings.xml 
+  cp /vagrant/files/pom.xml /home/vagrant/myapp/myapp-war/pom.xml
 
   # Restart service
   systemctl restart tomcat9
