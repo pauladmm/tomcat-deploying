@@ -13,6 +13,9 @@ Vagrant.configure("2") do |config|
   apt-get install
   apt install -y tomcat9 openjdk-11-jdk tomcat9-admin maven git
 
+  # Start Tomcat Service
+  systemctl start tomcat9
+
   # Add group 
   groupadd tomcat9
 
