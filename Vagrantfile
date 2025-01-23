@@ -10,15 +10,15 @@ Vagrant.configure("2") do |config|
 
   # Install services
   apt-get update
-  apt-get install
-  apt install -y tomcat9 openjdk-11-jdk tomcat9-admin maven git
+  
+  apt-get install -y tomcat9 openjdk-11-jdk tomcat9-admin maven git
 
   # Start Tomcat Service
   systemctl start tomcat9
 
   # Add group and an app directory
   groupadd tomcat9
-  mkdir myapp
+  mkdir /home/vagrant/myapp
 
   # Add user tomcat9
   useradd -s /bin/false -g tomcat9 -d /etc/tomcat9 tomcat9
@@ -29,14 +29,14 @@ Vagrant.configure("2") do |config|
   cp /vagrant/files/context.xml /usr/share/tomcat9-admin/host-manager/META-INF/context.xml
   cp /vagrant/files/settings.xml /etc/maven/settings.xml 
   
+  # Restart service
+  systemctl restart tomcat9
 
   # App Generation
   
-  cd myapp
-  mvn archetype:generate-DgroupId=org.zaidinvergeles \
-  -DartifactId=myapp-war \
-  -DarchetypeArtifactId=maven-archetype-webapp \
-  -DinteractiveMode=false
+  cd /home/vagrant/myapp
+  mvn archetype:generate -DgroupId=org.zaidinvergeles -DartifactId=myapp-war -DarchetypeArtifactId=maven-archetype-webapp -DinteractiveMode=false
+
   
   # Modify POM for Maven deploy
   cp /vagrant/files/pom.xml /home/vagrant/myapp/myapp-war/pom.xml
@@ -45,7 +45,7 @@ Vagrant.configure("2") do |config|
   git clone https://github.com/cameronmcnz/rock-paper-scissors.git
   cd rock-paper-scissors/
   git checkout patch-1
-  cp /vagrant/files/rock-scissors-paper/pom.xml /home/vagrant/rock-paper-scissors/pom.xml 
+  cp /vagrant/files/rock-scissors-paper/pom.xml /home/vagrant/myapp/rock-paper-scissors/pom.xml 
 
   # Restart service
   systemctl restart tomcat9
